@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-import time
 
 @given('we visit login page')
 def step_impl(context):
@@ -36,10 +35,8 @@ def step_impl(context, error):
 
 @then('we are redirected to the main page')
 def step_impl(context):
-	#time.sleep(3)
-	#greet = context.browser.find_element_by_link_text("Howdy, " + context.user)
-	greet = WebDriverWait(context.browser, 10).until(EC.presence_of_element_located((By.LINK_TEXT, "Howdy, " + context.user)))
-	greet = greet.text
+	greetElement = WebDriverWait(context.browser, 10).until(EC.presence_of_element_located((By.LINK_TEXT, "Howdy, " + context.user)))
+	greet = greetElement.text
 	assert greet == "Howdy, " + context.user
 	logout = context.browser.find_element_by_link_text("(Logout)")
 	logout.click()
