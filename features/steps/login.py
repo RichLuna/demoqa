@@ -28,7 +28,7 @@ def step_impl(context, user, password):
 
 @then('we receive an error message "{error}"')
 def step_impl(context, error):
-	time.sleep(5)
+	WebDriverWait(context.browser, 10).until(EC.text_to_be_present_in_element((By.CLASS_NAME, "response"), error))
 	context.response = context.browser.find_element_by_class_name("response")
 	response = context.response.text
 	assert error in response
@@ -36,10 +36,10 @@ def step_impl(context, error):
 
 @then('we are redirected to the main page')
 def step_impl(context):
-	time.sleep(3)
-	greet = context.browser.find_element_by_link_text("Howdy, " + context.user)
+	#time.sleep(3)
+	#greet = context.browser.find_element_by_link_text("Howdy, " + context.user)
+	greet = WebDriverWait(context.browser, 10).until(EC.presence_of_element_located((By.LINK_TEXT, "Howdy, " + context.user)))
 	greet = greet.text
-	print(greet)
 	assert greet == "Howdy, " + context.user
 	logout = context.browser.find_element_by_link_text("(Logout)")
 	logout.click()
